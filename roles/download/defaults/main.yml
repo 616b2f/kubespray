@@ -51,7 +51,7 @@ image_arch: "{{host_architecture | default('amd64')}}"
 # Versions
 kube_version: v1.16.6
 kubeadm_version: "{{ kube_version }}"
-etcd_version: v3.3.10
+etcd_version: 3.3.10
 
 # gcr and kubernetes image repo define
 gcr_image_repo: "gcr.io"
@@ -65,11 +65,11 @@ quay_image_repo: "quay.io"
 
 # TODO(mattymo): Move calico versions to roles/network_plugins/calico/defaults
 # after migration to container download
-calico_version: "v3.11.1"
-calico_ctl_version: "v3.11.1"
-calico_cni_version: "v3.11.1"
-calico_policy_version: "v3.11.1"
-calico_typha_version: "v3.11.1"
+calico_version: "v3.11.2"
+calico_ctl_version: "v3.11.2"
+calico_cni_version: "v3.11.2"
+calico_policy_version: "v3.11.2"
+calico_typha_version: "v3.11.2"
 typha_enabled: false
 
 flannel_version: "v0.11.0"
@@ -97,7 +97,7 @@ crictl_version: "{{ crictl_supported_versions[kube_major_version] }}"
 kubelet_download_url: "https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubelet"
 kubectl_download_url: "https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubectl"
 kubeadm_download_url: "https://storage.googleapis.com/kubernetes-release/release/{{ kubeadm_version }}/bin/linux/{{ image_arch }}/kubeadm"
-etcd_download_url: "https://github.com/coreos/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-{{ image_arch }}.tar.gz"
+etcd_download_url: "https://github.com/coreos/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-{{ image_arch }}.tar.gz"
 cni_download_url: "https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz"
 calicoctl_download_url: "https://github.com/projectcalico/calicoctl/releases/download/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}"
 crictl_download_url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
@@ -353,8 +353,8 @@ crictl_binary_checksum: "{{ crictl_checksums[image_arch][crictl_version] }}"
 # Also provide the address of your own private registry.
 # And use --insecure-registry options for docker
 kube_proxy_image_repo: "{{ kube_image_repo }}/kube-proxy"
-etcd_image_repo: "{{ quay_image_repo }}/coreos/etcd"
-etcd_image_tag: "{{ etcd_version }}{%- if image_arch != 'amd64' -%}-{{ image_arch }}{%- endif -%}"
+etcd_image_repo: "{{ gcr_image_repo }}/google-containers/etcd"
+etcd_image_tag: "{{ etcd_version }}"
 flannel_image_repo: "{{ quay_image_repo }}/coreos/flannel"
 flannel_image_tag: "{{ flannel_version }}"
 flannel_cni_image_repo: "{{ quay_image_repo }}/coreos/flannel-cni"
@@ -452,7 +452,7 @@ local_path_provisioner_image_repo: "{{ docker_image_repo }}/rancher/local-path-p
 local_path_provisioner_image_tag: "v0.0.2"
 ingress_nginx_controller_image_repo: "{{ quay_image_repo }}/kubernetes-ingress-controller/nginx-ingress-controller"
 ingress_nginx_controller_image_tag: "0.28.0"
-cert_manager_version: "v0.11.0"
+cert_manager_version: "v0.12.0"
 cert_manager_controller_image_repo: "{{ quay_image_repo }}/jetstack/cert-manager-controller"
 cert_manager_controller_image_tag: "{{ cert_manager_version }}"
 addon_resizer_version: "1.8.3"
@@ -489,7 +489,7 @@ downloads:
     file: "{{ etcd_deployment_type == 'host' or etcd_kubeadm_enabled }}"
     enabled: true
     version: "{{ etcd_version }}"
-    dest: "{{local_release_dir}}/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+    dest: "{{local_release_dir}}/etcd-v{{ etcd_version }}-linux-{{image_arch}}.tar.gz"
     repo: "{{ etcd_image_repo }}"
     tag: "{{ etcd_image_tag }}"
     sha256: >-
