@@ -318,18 +318,24 @@ cni_binary_checksums:
   amd64: 29a092bef9cb6f26c8d5340f3d56567b62c7ebdb1321245d94b1842c80ba20ba
 calicoctl_binary_checksums:
   arm:
+    v3.12.0: 0
+    v3.11.2: 0
     v3.11.1: 0
     v3.7.3: 0
     v3.6.1: 0
     v3.5.4: 0
     v3.4.4: 0
   amd64:
+    v3.12.0: 0
+    v3.11.2: 0
     v3.11.1: 045fdbfdb30789194c499ba17c8eac6d1704fe20d05e3c10027eb570767386db
     v3.7.3: 932f68e893e80e95e10f064f1e7745e438d456f41a6ff12d11bb16ca0cab735c
     v3.6.1: 3b01336de37550e020343d62a38c96c4605d33a3ed7ddba2fe38bc172a5b42b5
     v3.5.4: 197194b838cc2a9a7455c2ebd5505a5e24f8f3d994eb75c17f5dd568944100b8
     v3.4.4: 93bd084e053cf1bf3b7fef369677bd6767c30fe7135e2c7e044e31693422ef61
-  arm64:
+  arm64: 
+    v3.12.0: 8c8fa51a80e2226d145bde88f1228d53ee08064dc5351667fb89398af54d9afd
+    v3.11.2: 1873ef0c35917e3c9c5633768c02d2020557fe3dc8dda1123a14d1e7f1482756
     v3.11.1: 770e0fce9acf1927726d64a885f8350d44a3fcbf248017d0aceec58bd41fa1b8
     v3.7.3: 7cfaab25c287f7ef93b2682d060b55bf39f76b668540de50376b5ed174209832
     v3.6.1: 60fbaeb257061647bdf12b5ede7a0d4298a5ee216f6472e5a92bb14ef5c2a5d3
@@ -414,7 +420,7 @@ nginx_image_tag: 1.17
 haproxy_image_repo: "{{ docker_image_repo }}/library/haproxy"
 haproxy_image_tag: 1.9
 
-coredns_version: "1.6.0"
+coredns_version: "1.6.7"
 coredns_image_repo: "{{ docker_image_repo }}/coredns/coredns"
 coredns_image_tag: "{{ coredns_version }}"
 
@@ -422,7 +428,7 @@ nodelocaldns_version: "1.15.8"
 nodelocaldns_image_repo: "{{ kube_image_repo }}/k8s-dns-node-cache"
 nodelocaldns_image_tag: "{{ nodelocaldns_version }}"
 
-dnsautoscaler_version: 1.6.0
+dnsautoscaler_version: 1.7.1
 dnsautoscaler_image_repo: "{{ kube_image_repo }}/cluster-proportional-autoscaler-{{ image_arch }}"
 dnsautoscaler_image_tag: "{{ dnsautoscaler_version }}"
 test_image_repo: "{{ docker_image_repo }}/library/busybox"
@@ -450,8 +456,8 @@ rbd_provisioner_image_repo: "{{ quay_image_repo }}/external_storage/rbd-provisio
 rbd_provisioner_image_tag: "v2.1.1-k8s1.11"
 local_path_provisioner_image_repo: "{{ docker_image_repo }}/rancher/local-path-provisioner"
 local_path_provisioner_image_tag: "v0.0.2"
-ingress_nginx_controller_image_repo: "{{ quay_image_repo }}/kubernetes-ingress-controller/nginx-ingress-controller"
-ingress_nginx_controller_image_tag: "0.28.0"
+ingress_nginx_controller_image_repo: "{{ quay_image_repo }}/kubernetes-ingress-controller/nginx-ingress-controller{% if image_arch != 'amd64' %}-{{ image_arch }}{% endif %}"
+ingress_nginx_controller_image_tag: "0.29.0"
 cert_manager_version: "v0.12.0"
 cert_manager_controller_image_repo: "{{ quay_image_repo }}/jetstack/cert-manager-controller"
 cert_manager_controller_image_tag: "{{ cert_manager_version }}"
