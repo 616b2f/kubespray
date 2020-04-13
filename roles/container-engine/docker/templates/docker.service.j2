@@ -10,8 +10,9 @@ After=network.target docker.socket{{ ' containerd.service' if installed_docker_v
 {{ 'BindsTo=containerd.service' if installed_docker_version.stdout is version('18.09.1', '>=') }}
 Wants=docker.socket
 {% elif ansible_os_family == "Suse" %}
-After=network.target{{ ' containerd.service' if installed_docker_version.stdout is version('18.09.1', '>=') else '' }}
-{{ 'BindsTo=containerd.service' if installed_docker_version.stdout is version('18.09.1', '>=') }}
+After=network.target lvm2-monitor.service SuSEfirewall2.service
+# After=network.target{{ ' containerd.service' if installed_docker_version.stdout is version('18.09.1', '>=') else '' }}
+# {{ 'BindsTo=containerd.service' if installed_docker_version.stdout is version('18.09.1', '>=') }}
 {% endif %}
 
 [Service]
@@ -32,7 +33,7 @@ ExecStart={{ docker_bin_dir }}/docker{% if installed_docker_version.stdout is ve
           $DOCKER_NETWORK_OPTIONS \
           $DOCKER_DNS_OPTIONS \
           $INSECURE_REGISTRY
-{% if not is_atomic and systemd_version.stdout|int >= 226 %}
+{% if not is_ostree and systemd_version.stdout|int >= 226 %}
 TasksMax=infinity
 {% endif %}
 LimitNOFILE=1048576
