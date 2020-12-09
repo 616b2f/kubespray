@@ -51,7 +51,7 @@ image_arch: "{{host_architecture | default('amd64')}}"
 # Versions
 kube_version: v1.17.4
 kubeadm_version: "{{ kube_version }}"
-etcd_version: v3.3.12
+etcd_version: 3.3.17
 
 # gcr and kubernetes image repo define
 gcr_image_repo: "gcr.io"
@@ -616,7 +616,7 @@ downloads:
     file: "{{ etcd_deployment_type == 'host' }}"
     enabled: true
     version: "{{ etcd_version }}"
-    dest: "{{ local_release_dir }}/etcd-{{ etcd_version }}-linux-{{image_arch}}.tar.gz"
+    dest: "{{ local_release_dir }}/etcd-v{{ etcd_version }}-linux-{{image_arch}}.tar.gz"
     repo: "{{ etcd_image_repo }}"
     tag: "{{ etcd_image_tag }}"
     sha256: >-
